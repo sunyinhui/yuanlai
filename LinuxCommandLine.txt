@@ -1,0 +1,581 @@
+1.Linux基本原则
+	1.有目的单一的小程序组成 组合小程序完成复杂任务
+	2.一切皆文件
+	3.尽量避免捕获用户接口
+	4.配置文件保存为文本格式
+2.CLI接口
+	命令格式
+		1.命令 选项   参数：命令的作用对象
+		       选项修命令执行方式(短选项-， 长选项--)
+3.su: switch user 切换用户   su [-l] 用户名
+4.认证机制 Authentication 授权Authorization  审计Audition(日志)
+5.ls：list 列出
+	-h human 
+	-l long 
+	-a all  
+	. 当前目录 
+	..上级目录 
+	-A:不显示以上两个 
+	-d:显示目录自身属性
+	-i:index node inode 索引节点号
+	-r:降序 默认为升序
+	-R:Recursive 递归显示 
+6.pwd: Print Working Directory
+7.文件类型
+	-:普通文件
+	d:目录文件
+	b:块设备文件 block
+	c:字符设备文件character
+	l:符号链接文件 symbolic link file
+	p:命令管道文件pipe
+	s:套接字文件socket
+
+ 文件权限：rwx 读写执行
+ 文件硬链接的次数
+ 文件的属主owner
+ 文件的属组group
+ 文件的大小size，单位是字节
+ 时间戳timestamp
+8. cd:change directory 
+	cd ~username：只有管理员权限才能进用户的home directory
+	cd -:在当前目录和前一次所在的目录之间来回切换
+9.命令类型：
+	内置命令shell内置 内部 内建
+	外部命令：在文件系统的某一个与命令名称相应的可执行文件
+	type: 显示指定属于哪种类型
+	环境变量：命名的内存空间 PATH:使用:分隔的路径 从PATH的路径中查找
+10.date:时间管理 
+	Linux：rtc晶体震荡 硬件时钟(clock) 系统时钟CPU模拟rtc(date)
+	window:ntp 网络时间协议
+11.获得命令的使用帮助
+	1>.内部命令 help command
+	  外部命令 command --help
+ 	2>.man command 
+	3>.info command 在线文档
+12.whatis command 
+13.cal calendar 日历  cal , cal 2016
+14.文件系统 FHS:Filesystem Hierarchy Standard 
+	1./boot:系统启动相关的文件 如内核，initrd, 以及grub(bootloader)
+	2./dev :设备文件
+		块设备：  随机访问，数据块 
+		字符设备：线性访问，按字符为单位 
+	3./etc: 配置文件
+	4./home:用户的家目录 每一个用户的目录通常默认为/home/username
+	5./root:管理员的家目录
+	6./lib: 库文件
+		静态库 .a 
+		动态库 .so shared object 
+		/lib/modules:内核文件
+	7./media:挂载点目录 将设备关联到系统的目录树下的某一个目录上 通常是移动设备
+	  /mnt  :额外的临时文件系统
+	8./opt :Optioanal add-on Apps 给主机额外安装软件所存放的目录
+	9./proc:伪文件系统，内核的映射文件 内核的统计数据
+	10./sys:伪文件系统，跟硬件设备相关的属性映射文件 通常实现硬件的管理
+	11./tmp：临时文件 /var/tmp
+	12./var：变化的文件
+	13./bin：可执行文件，用户命令
+	   /sbin:管理命令
+	14./usr:Unix Software Resource shareable static  read-only 全局共享的自读文件 数据属于可分享的与不可变动的
+		/usr/bin /usr/sbin /usr/lib /usr/local/bin /usr/local/sbin /usr/local/lib
+	15.命名规则：
+		1.长度不能超过255个字符
+		2.不能使用/当文件名
+		3.严格区分大小写
+15.mkdir 创建目录 
+	mkdir -pv ./test/hello/{x,y} 花括号的命令行展开
+16.文件创建和删除
+	touch
+		-a ：访问时间
+		-m ：修改时间
+		-c ：改变时间
+		-t ：修改时间戳 
+	stat :查看文件属性
+17.复制
+	cp
+	    -r:递归复制
+	    -i:交互式的
+	    -f:强制的 force
+	    -p: --preserve=mode,ownership,timestamps
+	    -d:复制所保持的链接文件
+	    -a:打包归档 保持原有的所有属性 常用于备份
+	
+	install 
+	    -d:创建目录
+	    文件 目录 install 不能是复制目录到目录，只能是文件到目录
+Gentoo:自己编译安装
+LFS: Linux from Scratch 从0开始构建Linux
+18. 查看文本
+	cat tac: concatenate 对于多个文件连接并显示，对于单个文件是显示
+		cat从头到尾显示 tac从尾到头显示  一下倾倒到屏幕
+		-n:显示行号
+		-E:显示行结束符 对于Linux文本文件的行结束符为$ 而window行结束符为$+\n
+	分页查看
+	more:支持向后翻页
+	less: more is less q键退出
+	head: 查看文件的前n行 -n 默认为10
+	tail : 查看文件的后n行 -n 默认为10
+	tail -f : --follow 查看文件尾部，不退出 等待显示后续追加至此文件的新内容
+19.文本处理
+	cut,join,sed,awk,grep
+	cut -d : 以:分割 delimiter分割符 -f1 字段
+		-d:指定字段分割符 默认为空格
+		-f:指定要显示的字段 -f 1,3(1-3)
+20.文本排序
+	只影响显示的内容，对原文件没有影响
+	sort: sort lines of text files 默认按字符ASCII升序排序
+		-n:按数值排序 numeric-sort
+		-r:reverse reverse the result of comparisons4
+		-t:以字段分割符	
+		-k:以哪个字段为关键字进行排序 常与-t连用
+		-u:unique 相同的行只显示一次  uniq命令只认为相邻的并且重复的行认为是相同的行去掉重复行
+		-f:--ignore-case 忽略字符大小写			
+	uniq : report or omit repeated lines
+		-c:count  显示文件中行重复的次数
+		-d:duplicate 只显示重复的行
+21.文本统计 wc word count 
+	    行 单词 总字节
+		-l:只显示行数
+		-w:只显示单词数
+		-c:只显示字节数
+		-m:只显示字符数
+		-L:最长的一行包含了多少个字符
+22.字处理命令 tr -translate or delete characters 转换或删除字符
+		tr [OPTION]... SET1 [SET2]
+			tr ab AB < /etc/passwd  : 输入重定向
+			tr -d:--delete 删除出现在字符集里的所有字符
+23.bash
+	pstree
+	bash：再打开一个shell
+	bash的特性
+		1.命令历史 命令补全 命令别名
+				history:查看命令历史 环境变量 HISTSIZE, echo $HISTSIZE :显示保存history size的大小
+					-c:清空命令历史
+					-d:offset delete the history entry at offset OFFSET指定第多少个命令 history -d 500 删除第500个命令
+					-w:write保存命令历史保存至历史文件中
+					-r:read the history file and append the contents
+				命令历史使用技巧
+					!n ：执行命令历史第n行的命令 ！323
+					!-n:执行命令历史中倒数第n行命令 ！-4 倒数第4行
+					!! :执行上一条命令
+					! string:执行命令历史中最近一个以指定字符串string开头的命令
+					!$:应用前一个命令的最后一个参数
+					Esc . :同上
+					Alt+.
+					Tab :命令补全 路径补全
+				命令别名
+					alias cmdalias=command[选项] 在shell中定义的别名仅当在当前shell生命周期中有效，别名的有效范围仅为当前shell进程
+					unalias + 别名 :撤销别名 
+					\别名：当别名和原始的命令同名 并且是原始命令的扩展 使用\别名就是使用原始的命令
+				命令替换 $(command)：把命令的执行结果替换成命令所在位置 或者使用 `command` 波浪线下的符号
+					echo 'The current directory is $(pwd).'  echo "Dir is `pwd`." :使用双引号 反引号
+					touch ./file-$(date +%F-%H-%M-%S).txt
+				bash支持的引号：
+						``:命令替换
+						"":若引用,可以实现变量替换 变量名到变量值的替换
+						'':强引用，不完成变量替换
+					
+					
+
+					  
+		2.管道，重定向
+		3.命令别名
+		4.命令行编辑 
+			光标跳转：ctrl+a 行首 
+				  ctrl+e 行尾
+				  ctrl+u 删除光标至命令行首的内容
+				  ctrl+k 删除光标至命令行尾的内容
+				  ctrl+d 删除光标所在的命令
+				  ctrl+l 清屏
+
+		5.命令行展开 
+		6.文件名通配
+		7.支持使用变量
+		8.支持编程
+24.文件名通配 globbing pathnames  #man 7 glob :查看文件名通配
+	*  :匹配任意长度的任意字符
+	?  :匹配任意一个字符
+	[] :匹配指定范围内的任意单个字符
+		[abc],[a-z],[A-Z],[0-9]，[0-9a-zA-Z]
+		[:space:]:表示所有的空白字符的集合
+		[:punct:]:表示所有的标点符号的集合
+		[:lower:]:表示所有的小写字母的集合
+		[:upper:]:表示所有的大写字母的集合
+		[:alpha:]:表示所有的字母的集合
+		[:digit:]:表示数字的集合 ls [[:digit:]]* :显示所有以数字开头的文件
+		[:alnum:]:表示数字和大小写字母的集合
+
+	[^]:匹配指定范围之外的任意单个字符 即不以指定的开头
+	[^[:alpha:]]:非字母
+	[[:alpha:]]*[[:space:]]*[[:alpha:]] a b
+	[[:alpha:]]*[^[:alpha:]]:以字母开头以非字母结尾的
+25.用户，组，权限
+	安全上下文 secure context
+	权限 r w x
+	文件：
+		r:可读，可以使用类似cat等命令查看文件内容
+		w:可写，可以编辑或删除此文件
+		x:可执行，executable,可以在命令提示符下当做命令提交给内核运行
+	目录：
+		r:可以对此目录执行ls以列出内部所有文件
+		w:可以在此目录创建文件
+		x:可以使用cd切换进此目录，也可以使用ls -l查看内部文件的详细信息，目录一般都有x权限
+	rwx:
+		0 000 ---：无权限
+		1 001 --x: 执行
+		2 010 -w-: 写
+		3 011 -wx: 写和执行
+		4 100 r--: 读
+		5 101 r-x: 读和执行
+		6 110 rw-: 读和写
+		7 111 rwx: 读写执行
+		
+		755：rwxr-xr-x
+	用户：UID, /etc/passwd 影子口令(密码)：/etc/shadow
+	  组：GID, /etc/group  影子口令(密码): /etc/gshadow
+	用户类别：
+		管理员：UID 0
+		普通用户: UID 1-65535
+			系统用户:1-499
+			一般用户:500-60000
+	用户组类别：
+		1.管理员组：
+		  普通组
+			系统组
+			一般组
+		2.私有组：创建用户时，如果没有为其指定所属的组，系统会自动为其创建一个与用户名同名的组
+		  基本组：用户的默认组
+		  附加组，额外组：默认组以外的组
+	用户管理
+		useradd userdel usermod passwd chsh chfn finger id chage 
+		useradd -u UID 
+			-g GID 基本组
+			-G GID,... 附加组  useradd -G mygroup user3
+			-c "注释信息" 
+			-r 添加一个系统用户
+			-d /path/to/directory 指定家目录  useradd -c "Tony Blare" -d /home/blare user4
+			-M 没有家目录
+			-s 指定用户默认的执行shell路径 useradd -s /sbin/nologin user5     切换 su user5
+		userdel 
+			-r 同时删除用户的家目录 默认不会删除家目录
+		usermod 
+			同useradd用法类似
+			-L 锁定账号
+			-U 解锁账号
+		chsh  更改shell设置
+		chfn  修改注释信息
+	密码管理
+	passwd [username]
+		--stdin 标准输入读取密码 Linux哲学尽量不与用户交互 用管道的方式传递给passwd命令 echo '密码' | passwd --stdin user3
+		-l 锁定账号
+		-u 解锁账号
+		-n 密码最短使用时间
+		-x 密码最长使用时间
+		-w 警告时间
+		-i 非活动时间
+		-d 删除账号密码 用户没有密码是不能登录的，Linux是禁止空密码登录
+	pwck verify intgrity of password files 检查密码的完整性
+
+		
+		
+		
+
+			
+		
+	组管理
+		groupadd groupdel groupmod gpasswd
+		
+		groupadd 
+			-g GID
+			-r 添加为系统组
+		groupmod 
+			-g GID
+			-n 修改组名
+		groupdel 删除组名
+		
+		gpasswd 给组加密码
+		
+		newgrp 登录到其他组
+	
+	
+	
+	chage     改变用户密码的过期时间
+		-d 最近一次的修改时间
+	        -E 过期时间
+		-I 非活动时间
+		-m 最短使用期限
+		-M 最长使用期限
+		-W 警告时间
+		
+
+
+
+
+	练习 
+		1.创建一个用户mandriva 其ID号为2002，基本组为distro组ID为3003，附加组为linux
+			# groupadd -g 3003 distro
+			# groupadd linux
+			# useradd -u 2002 -g distro -G linux mandriva
+		2.创建一个用户fedora，其全名为Fedro Community 默认shell为tcsh
+			# useradd -c "Fedro Community" -s /bin/tchs fedro
+		3.修改mandriva的ID号为4004，基本组为linux,附加组为distro和fedora
+			# usermod -u 4004 -g linux -G distro,fedora mandriva
+		4.给fedora加密码，并设置其密码最短使用期限为2天，最长为50天
+			# passwd -n 2 -x 50 fedora
+		5.将mandriva的默认shell改为/bin/bash
+			# usermod -s /bin/bash mandriva 
+		6.添加系统用户hbase 且不允许其登录系统
+	·	 	# useradd -r -s /sbin/nologin hbase
+		
+		
+		
+			
+			
+	权限管理
+		chmod chgrp chown umask
+
+		三类用户
+			u 属主
+			g 属组
+			o 其他用户
+			a 所有用户
+		chown 改变文件属主(只有管理员可以使用此命令)
+			# chown userowner file,...
+				-R 修改目录及其内部文件 
+				--reference=/path/to/somefile file,...  把file,...设定成与somefile同样的属主同时也改了属组	
+			
+		chgrp 改变文件属组 也只有管理员才可以使用此命令
+			# chgrp groupname file,...
+				-R 递归修改
+		同时修改用户名和属组名
+		chown username:groupname file,... 同时修改 chown :groupname file,...就只改组名
+		chown username.groupname file,... 同上
+		
+		chmod 修改文件权限 
+			1.可以修改三类用户的权限
+				chmod 775 file/dir,... 注意位数不够时是从前面补0，例 chmod 75 file  就是075权限
+					-R 递归修改文件下的所有文件
+					--reference=/path/to/somefile file,... 
+			2.也可以修改某类用户或某些用户权限 chmod user=mode file,...
+				 chmod u=rwx /tmp/abc
+				 chmod u=rwx,g=rw /tmp/abc 当不一样的时候用逗号隔开
+				 chmod ug=rw /tmp/abc
+				 chmod g=rx,o= /tmp/abc    省略既是对应位上没有权限
+				 
+			3.修改某类的用户某位或某些位权限
+				 chmod user+/-mode file,...
+				 chmod u-wx /tmp/abc
+				 chmod u+x,g-x /tmp/abc
+				 chmod a+x /tmp/abc  注a可以省略 chmod +x /tmp/abc
+				 
+		练习
+			1.新建一个没有家目录的用户openstack
+				# useradd -M openstack
+			2.复制/etc/skel为/home/openstack
+				# cp -r /etc/skel /home/openstack
+			3.改变/home/openstack及其内部文件的属主属组均为openstack
+				# chown -R openstack:openstack /home/openstack
+			4./home/openstack及其内部文件，属组和属主和其他用户没有任何访问权限
+ 				# chmod -R go= /home/openstack
+		验证操作成功 su -openstack
+ 		 
+		手动添加用户hive 基本组为hive(5000),附加组为mygroup
+
+		nano /etc/group   最后一行添加 hive:x:5000 在mygroup所在行添加hive
+		nano /etc/passwd  最后一行添加hive:x:5000:5000:Hive:/home/hive:/bin/bash
+		nano /etc/shadow  最后一行添加hive:!:16840:0:99999:7:::
+		cp -r /etc/skel/ /home/hive
+		chown -R hive:hive /home/hive
+		chmod -R go= /home/hive
+		openssl passwd 可以把密码生成秘钥 
+			-1 :生成带加了8位杂质的秘钥 
+		openssl passwd -1 -salt '12345678' ：生成秘钥$1$12345678$0ME5N6oDyoEAwUp7b5UDM/把它粘贴到/etc/shadow hive把!号替换 
+		
+		管理员的默认创建文件权限是644	文件夹是755
+		普通管理员创建文件权限是664	文件夹是775
+		
+		umask: 遮罩码 root的遮罩码是0022 普通用户的遮罩码是0002  
+		设定umask码 umask 022 修改之后只会在当前有效 退出后失效 在.bashrc中加上一行umask 022即可
+		创建文件的权限是666-umask码 注意文件默认没有执行权限，如果算的结果中有执行权限时会自动加1  umask 023 试试 666-023=643 但是实际上是644
+		创建目录的权限是777-umask码
+		
+		站在用户登录的角度来说，Shell的类型：
+			1.登录式shell
+				正常通常某终端登录
+				su - username
+				su -l username
+			2.非登录的shell
+				su username
+				图形终端下打开命令窗口
+				自动执行的shell脚本
+		bash的配置文件
+			全局配置 /etc/profile, /etc/profile.d/*.sh,以及/etc/bashrc
+			个人配置 ~/.bash_profile, ~/.bashrc
+
+		profile类的文件：设定环境变量  运行命令或脚本
+		bashrc类的文件：设定本地变量 定义命令别名
+
+		登录式shell如何读取配置文件？
+			首先读取/etc/profile-->/etc/profile.d/*.sh -->~/.bash_profile -->~/.bashrc --> /etc/bashrc
+		非登录式shell如何读取配置文件？
+			首先读取~/.bashrc --> /etc/bashrc --> /etc/profile.d/*.sh
+
+26./etc/passwd
+	account:登录名
+	password:密码
+	UID
+	GID
+	comment:用户的额外信息
+	Home Dir: 家目录
+	Shell: 用户的默认shell
+  /etc/shadow
+	account：登录名
+	encrypted passwrod:加密的密码
+ /etc/shells : 指定了当前系统可用的安全shell
+ /etc/login.defs
+	
+
+
+加密方法：
+	对称加密：加密和解密使用同一个密码
+	非对称加密，公钥加密：每个密码都成对加密，一个为公钥public key 一个为私钥secret key
+	单向加密，散列加密：能加密不能解密  用于数据完整性校验  常用的有 MD5 Message Digest   SHA1:secure hash algorithm 
+		 		1.不可逆
+				2.雪崩效应 初始数据的微小改变将会引起结果的巨大变化 反逆破解
+				3.定长输出
+27.I/O重定向
+	>:标准输出重定向 原有内容会被覆盖掉 而>>输出重定向会保留原有内容，追加输出
+		     为了防止数据被覆盖 bash中有一个set命令 help set 中 -C开关关闭overwritten,+C打开
+		     set -C：禁止对已经存在文件使用覆盖重定向 强制覆盖输出 则使用>|
+		     set +C：关闭上述功能
+	2>:错误输出重定向  ls /varr > /home/var.txt 但没有文件夹varr 此时/home/var.txt里没有内容
+		      使用 ls /varr 2> /home/var.txt  则把错误输出写到文件中
+		2>>：是使用追加的方式写入到文件中
+		 
+		ls -l /var > /home/var.txt 2> /home/err.out 正确则重定向到var.txt，错误则重定向到err.out 
+	也可以  ls -l /var > /home/var.txt 2> /home/var.txt 一个文件不可能既是正确又是错误的,所以可以重定向到同一个文件里
+		 
+	&> :重定向标准输出或错误输出至同一个文件中
+		以上命令就可以这样写
+		ls /var &> /home/var.out  不管是标准输出还是错误输出都写到var.out下
+	&>> :追加的方式
+
+
+	<:标准输入重定向	
+		而没有<<用法 <<：表示此处生成文档here document
+	cat >> /home/sunyinhui/myfile.txt <<EOF	  把输入写入到文件中
+28.管道:前一个命令的输出，作为另一个命令的输入  用于组合小命令完成复杂任务
+	命令1 | 命令2 | 命令3 ...：把命令1的输出传递到命令2当做命令2的输入 甚至再传递到命令3
+	echo 'hello world' | tr 'a-z' 'A-Z'
+	cut -d: -f1 /etc/passwd | sort | tr 'a-z' 'A-Z' 
+	
+	命令tee :read from standard input and write to standard output and files 
+		实现在终端输出也写入到文件
+	echo 'hello world' | tee /home/sunyinhui/hello.out
+	wc -l /etc/passwd | cut -d' ' -f1 ;  ' '表示空白字符
+	
+	练习：
+		1.统计/usr/bin/目录下的文件个数
+			# ls /usr/bin | wc -l : 注意ls不加-l参数 -l显示的第一行是total 45004 
+		2.取出当前系统上所有用户的shell 要求 每种shell只显示一次 并且按顺序进行显示
+			# cut -d: -f7 /etc/passwd | sort -u | wc -n
+		3.显示/var/log/下所有文件的类型
+			# file /var/log*
+		4.取出/etc/inittab文件的第6行:先取前6行，再取最后一行
+			# head -6 /etc/inittab | tail -1 
+		5.取出/etc/passwd文件中的倒数第9个用户的用户名和shell,显示到屏幕上并将其保存到/tmp/users文件中
+			# tail -9 /etc/passwd |head -1 |  cut -d: -f1,7 | tee /tmp/users
+		6.显示/etc/下以pa开头的文件，并统计其个数
+			# ls -d /etc/pa* | wc -l
+		7.不使用文本编辑器，将alias cls=clear 一行内容添加至当前用户的.bashrc文件中
+			# echo 'alias cls=clear' >> ~/.bashrc
+29.grep：global  research expression 正则表达式  根据模式去搜索文本，并将符合模式的文本显示出来
+ 	 egrep,
+	 fgrep fast grep :不支持正则表达式 
+	
+	Pattern:文本字符和正则表达式的元字符所组合起来过滤文本的匹配条件
+	grep [options] pattern [file,...]
+	grep [options] [-e pattern | -f file] [file,...]
+	grep -i :忽略大小写
+	     --color：加上颜色 加别名 alias grep='grep --color'
+	     -v 显示没有匹配到的文本  --invert-match
+             -o 只显示被匹配到的字符串
+	     -E 扩展的正则表达式
+	     -A n：连同显示匹配到所在行的下n行
+	     -B n:                       上n行
+	     -C n：                     上下各n行  context 上下文  
+	通配符：
+	* ：
+	? :
+	[]:
+	[^]: 
+	
+	正则表达式 REGular EXPression REGEXP 
+	   基本正则表达式 Basic expression
+		元字符：
+			.:任意单个字符
+			[]:匹配指定范围内的单个字符
+			[^]:匹配指定范围外的单个字符
+			字符集合：[:digit:],[:lower:],[:upper:],[:punct:],[:space:],[:alpha:],[:alnum:]
+				    grep '[[:digit:]]$' /etc/profile ：以数字结束的行
+		字符个数：
+			*：匹配其前面的字符任意次
+			.*:任意长度的任意字符
+			\?:匹配其前面的字符1次或0次   	
+			\{m,n\}:匹配其前面的字符至少m次，至多n次
+		位置锚定：
+			^:锚定行首，此字符后面的任意字符必须出现在行首
+			$:锚定行尾，此字符前面的任意字符必须出现在行尾
+			^$:空白行
+			\<或\b:锚定其后面的任意字符必须作为单词的首部出现
+			\>或\b:锚定其前面的任意字符必须作为单词的尾部出现
+			       \<root\> 就是在文本中查找root单词
+		分组：
+			\(\):
+				ab*
+				\(ab\)* :把ab当成一个整体
+				 	He love his lover.
+					She like her lover.
+					He like his liker.
+					She love her liker.
+					
+					
+			向后引用
+				\1:第一个左括号以及与之对应的右括号所包括的所有内容
+				\2:第二个
+				grep '\(l..e\).*\1r' test.txt		
+	扩展正则表达式
+		+:至少匹配1次
+		{m,n}:不用加\	
+		():分组 不加\
+		| :或者， or 
+		
+	eprep '([1-9])'
+
+30.Shell编程
+
+	脚本编程
+
+	静态语言：编译型语言
+		强类型 变量
+		事先转换成可执行格式
+		C C++ JAVA 
+	动态语言：解释型语言 on the fly
+		弱类型
+		边解释边执行
+		PHP, shell, python, perl
+	面向过程：
+	面向对象：
+
+	变量 
+
+
+
+
+
+
+
+
+
+
+
+	
