@@ -568,7 +568,7 @@ LFS: Linux from Scratch 从0开始构建Linux
 
 	变量 
 
-
+31 
 
 
 
